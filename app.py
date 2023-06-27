@@ -20,8 +20,8 @@ def list_users():
 
 @app.route('/users/<int:user_id>')
 def list_users_movies(user_id):
-    users_movies = data_manager.get_user_movies(user_id)
-    return render_template('user_movies.html', users_movies=users_movies)
+    user_movies = data_manager.get_user_movies(user_id)
+    return render_template('user_movies.html', users_movies=user_movies, user_id=user_id)
 
 
 @app.route('/add_user', methods=['GET', 'POST'])
@@ -89,47 +89,12 @@ def show_user_movies(user_id):
     return render_template("user_movies.html", movies=user_movies, user_name=user_name, success_message=success_message)
 
 
-@app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['POST'])
-def update_movie(user_id, movie_id):
-    title = request.form.get('title')
-    director = request.form.get('director')
-    year = request.form.get('year')
-    rating = request.form.get('rating')
-
-    # Validate that all fields are filled
-    if not (title and director and year and rating):
-        error_message = "All fields are required."
-        return render_template('edit_movie.html', user_id=user_id, movie={"id": movie_id, "title": title, "director": director, "year": year, "rating": rating}, error=error_message)
-
-    # Retrieve the user's movies from the JSON data manager
-    user_movies = data_manager.get_user_movies(user_id)
-
-    # Find the movie to be updated
-    movie = next((movie for movie in user_movies if movie["id"] == movie_id), None)
-
-    if movie:
-        # Update the movie's details
-        movie["title"] = title
-        movie["director"] = director
-        movie["year"] = year
-        movie["rating"] = rating
-
-        # Save the updated movie data to the JSON file
-        data_manager.save_movie_JSON_data(user_movies)
-
-        # Construct the success message as a URL parameter
-        success_message = f"Movie '{quote(title)}' has been updated successfully."
-
-        # Redirect to the user's movie list page with the success message
-        return redirect(f'/users/{user_id}?success={quote(success_message)}')
-    else:
-        return "Movie not found"  # Or redirect to an error page
-
-
 @app.route('/users/<int:user_id>/edit_movie/<int:movie_id>', methods=['GET'])
 def edit_movie(user_id, movie_id):
     user_movies = data_manager.get_user_movies(user_id)
     movie = next((movie for movie in user_movies if movie["id"] == movie_id), None)
+
+    print(movie)
 
     if movie:
         return render_template('edit_movie.html', user_id=user_id, movie=movie)
@@ -147,8 +112,6 @@ def delete_movie(user_id, movie_id):
     data_manager.delete_movie(user_id, movie_id)
 
     return redirect(f'/users/{user_id}')
-
-
 
 
 if __name__ == '__main__':

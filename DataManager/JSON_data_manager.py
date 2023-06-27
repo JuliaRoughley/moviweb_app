@@ -2,7 +2,6 @@ import json
 from DataManager.data_manager_interface import DataManagerInterface
 
 
-
 class JSONDataManager(DataManagerInterface):
     def __init__(self, filename):
         self.filename = filename
@@ -84,6 +83,36 @@ class JSONDataManager(DataManagerInterface):
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
 
+    def update_movie(self, user_id, title, director, year, rating):
+        with open(self.filename, "r") as file:
+            users_data = json.load(file)
+
+        # Find the user for whom you want to update the movie
+        user = next((user for user in users_data if user["id"] == user_id), None)
+        if user is None:
+            # Handle user not found error
+            return
+
+        movies = user["movies"]
+        movie_to_update = {}
+        for movie in movies:
+            if movie["name"] == title:
+                movie_to_update = movie
+
+        movie_to_update = {"id": movie_to_update["id"],
+                           "name": title,
+                           "director": director,
+                           "year": year,
+                           "rating": rating
+                           }
+
+        for movie in movies:
+            if movie["id"] == movie_to_update["id"]:
+                movie = movie_to_update
+
+        with open(self.filename, "w") as file:
+            json.dump(movies, file, indent=4)
+
     def movie_exists(self, user_id, movie_title):
         users_data = self.open_movie_JSON_data()
         user = next((user for user in users_data if user["id"] == user_id), None)
@@ -107,5 +136,3 @@ class JSONDataManager(DataManagerInterface):
 
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
-
-

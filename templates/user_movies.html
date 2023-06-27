@@ -18,6 +18,7 @@
                 <input type="hidden" name="movie_id" value="{{ movie.id }}">
                 <button type="submit">Delete</button>
             </form>
+
             <form action="/users/{{ user_id }}/edit_movie/{{ movie.id }}" method="GET" style="display: inline;">
                 <button type="submit">Edit</button>
             </form>
