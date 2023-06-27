@@ -52,3 +52,6 @@ class CSVDataManager(DataManagerInterface):
                             movies.append(movie)
 
         return movies if movies else []  # Return an empty list if no movies exist for the user
+
+    def add_new_user(self):
+        pass

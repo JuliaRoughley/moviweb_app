@@ -31,24 +31,14 @@ def add_new_user():
             error_message = "Username is required."
             return render_template('add_user.html', error=error_message)
 
-        with open("movie_data/movies.json", "r") as file:
-            data = json.load(file)
+        data = data_manager.open_movie_JSON_data()
 
         for user in data:
             if user["name"] == username:
                 error_message = "Username already exists. Please choose a different username."
                 return render_template('add_user.html', error=error_message)
 
-        new_user_id = len(data) + 1
-        new_user = {
-            "id": new_user_id,
-            "name": username,
-            "movies": []
-        }
-        data.append(new_user)
-        with open("movie_data/movies.json", "w") as file:
-            json.dump(data, file, indent=4)
-
+        data_manager.add_new_user(username)
         return redirect('/users')
 
     return render_template('add_user.html')
