@@ -55,3 +55,6 @@ class CSVDataManager(DataManagerInterface):
 
     def add_new_user(self):
         pass
+
+    def add_new_movie(self):
+        pass

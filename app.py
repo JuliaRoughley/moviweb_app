@@ -44,9 +44,12 @@ def add_new_user():
     return render_template('add_user.html')
 
 
-@app.route('/users/<user_id>/add_movie')
+@app.route('/users/<user_id>/add_movie', methods=["GET", "POST"])
 def add_new_movie():
-    pass
+    if request.method == 'POST':
+
+
+    return render_template("add_movie.html")
 
 
 @app.route('/users/<user_id>/update_movie/<movie_id>')

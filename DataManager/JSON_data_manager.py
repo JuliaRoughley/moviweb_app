@@ -45,4 +45,7 @@ class JSONDataManager(DataManagerInterface):
         with open("movie_data/movies.json", "w") as file:
             json.dump(users_data, file, indent=4)
 
+    def add_new_movie(self):
+        pass
+
 
