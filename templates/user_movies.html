@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users-Movie_Lists</title>
+</head>
+<body>
+    <h1>Your Favourite Movies!</h1>
+    <ul>
+      {% for movie in users_movies %}
+        <li>
+            <h2>{{ movie.name }}</h2>
+            <p>Director: {{ movie.director }}</p>
+            <p>Year: {{ movie.year }}</p>
+            <p>Rating: {{ movie.rating }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

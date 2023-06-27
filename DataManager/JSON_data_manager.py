@@ -8,23 +8,23 @@ class JSONDataManager(DataManagerInterface):
         self.filename = filename
 
     def get_all_users(self):
-        """Loads the JSON data file, initialises an empty list of users, loops through the data from the json file and
-        adds each user as a dictionary to the list,then returns the list of all users"""
-
+        """Loads the JSON data file and returns a list of dictionaries containing user IDs and names"""
         with open(self.filename, "r") as file:
-            user_sdata = json.loads(file.read())
+            user_data = json.load(file)
 
         users = []
-        for user in user_sdata:
-            users.append({"user": user["name"]})
+        for user in user_data:
+            users.append({"id": user["id"], "name": user["name"]})
 
         return users
 
     def get_user_movies(self, user_id):
-        # Return a list of all movies for a given user
         with open(self.filename, "r") as file:
-            users_data = json.loads(file.read())
+            users_data = json.load(file)
 
         for user in users_data:
             if user["id"] == user_id:
                 return user["movies"]
+
+        return []  # Return an empty list if user not found
+
