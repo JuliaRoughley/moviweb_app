@@ -5,17 +5,24 @@
     <title>Users-Movie_Lists</title>
 </head>
 <body>
-    <h1>Your Favourite Movies!</h1>
+    <h1>Your Favorite Movies!</h1>
     <ul>
-      {% for movie in users_movies %}
+        {% for movie in users_movies %}
         <li>
             <h2>{{ movie.name }}</h2>
             <p>Director: {{ movie.director }}</p>
             <p>Year: {{ movie.year }}</p>
             <p>Rating: {{ movie.rating }}</p>
+            <form action="/users/{{ user_id }}/delete_movie/{{ movie.id }}" method="POST" style="display: inline;">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <input type="hidden" name="movie_id" value="{{ movie.id }}">
+                <button type="submit">Delete</button>
+            </form>
+            <form action="/users/{{ user_id }}/edit_movie/{{ movie.id }}" method="GET" style="display: inline;">
+                <button type="submit">Edit</button>
+            </form>
         </li>
         {% endfor %}
     </ul>
-
 </body>
 </html>
