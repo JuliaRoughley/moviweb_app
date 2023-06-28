@@ -6,10 +6,16 @@
 </head>
 <body>
     <h1>Add User</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
     <form action="/add_user" method="POST">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <br>
+        {% if blank_field_error %}
+            <p style="color: red;">{{ blank_field_error }}</p>
+        {% endif %}
         <input type="submit" value="Add User">
     </form>
 </body>

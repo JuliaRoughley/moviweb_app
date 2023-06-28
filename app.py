@@ -21,16 +21,20 @@ def list_users():
 @app.route('/users/<int:user_id>')
 def list_users_movies(user_id):
     user_movies = data_manager.get_user_movies(user_id)
+    if not user_movies:
+        return render_template('no_such_user.html')
+
     return render_template('user_movies.html', users_movies=user_movies, user_id=user_id)
 
 
+@app.route('/add_user', methods=['GET', 'POST'])
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_new_user():
     if request.method == 'POST':
         username = request.form.get('username')
         if not username:
-            error_message = "Username is required."
-            return render_template('add_user.html', error=error_message)
+            blank_field_error = "Username is required."
+            return render_template('add_user.html', blank_field_error=blank_field_error)
 
         data = data_manager.open_movie_JSON_data()
 
@@ -43,6 +47,7 @@ def add_new_user():
         return redirect('/users')
 
     return render_template('add_user.html')
+
 
 
 @app.route('/users/<int:user_id>/add_movie', methods=["GET", "POST"])
@@ -102,8 +107,19 @@ def edit_movie(user_id, movie_id):
         return "Movie not found"  # Or redirect to an error page
 
 
+@app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['POST'])
+def update_movie(user_id, movie_id):
+    title = request.form.get('name')
+    director = request.form.get('director')
+    year = request.form.get('year')
+    rating = request.form.get('rating')
+
+    data_manager.update_movie(user_id, movie_id, title, director, year, rating)
+    return redirect(f'/users/{user_id}')
+
+
 @app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['POST'])
-def delete_movie(user_id, movie_id):
+def delete_movie():
     # Get the user_id and movie_id from the form data
     user_id = int(request.form.get('user_id'))
     movie_id = int(request.form.get('movie_id'))

@@ -29,7 +29,8 @@ class JSONDataManager(DataManagerInterface):
             if user["id"] == user_id:
                 return user["movies"]
 
-        return []  # Return an empty list if user not found
+        return None
+        # Return an empty list if user not found
 
     def add_new_user(self, username):
         users_data = self.open_movie_JSON_data()
@@ -83,7 +84,7 @@ class JSONDataManager(DataManagerInterface):
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
 
-    def update_movie(self, user_id, title, director, year, rating):
+    def update_movie(self, user_id, movie_id, title, director, year, rating):
         with open(self.filename, "r") as file:
             users_data = json.load(file)
 
@@ -93,25 +94,19 @@ class JSONDataManager(DataManagerInterface):
             # Handle user not found error
             return
 
-        movies = user["movies"]
-        movie_to_update = {}
-        for movie in movies:
-            if movie["name"] == title:
-                movie_to_update = movie
+        # Find the movie for which you want to update the details
+        movie = next((movie for movie in user["movies"] if movie["id"] == movie_id), None)
+        if movie is None:
+            # Handle movie not found error
+            return
 
-        movie_to_update = {"id": movie_to_update["id"],
-                           "name": title,
-                           "director": director,
-                           "year": year,
-                           "rating": rating
-                           }
-
-        for movie in movies:
-            if movie["id"] == movie_to_update["id"]:
-                movie = movie_to_update
+        movie["name"] = title
+        movie["director"] = director
+        movie["year"] = year
+        movie["rating"] = rating
 
         with open(self.filename, "w") as file:
-            json.dump(movies, file, indent=4)
+            json.dump(users_data, file, indent=4)
 
     def movie_exists(self, user_id, movie_title):
         users_data = self.open_movie_JSON_data()
