@@ -2,9 +2,12 @@ from flask import Flask, render_template, request, redirect
 from DataManager.JSON_data_manager import JSONDataManager
 from api_data_handling.api_data_handling import get_movie_details_by_name
 from urllib.parse import unquote, quote
+import logging
 
-app = Flask(__name__)
 data_manager = JSONDataManager("movie_data/movies.json")
+#logging.basicConfig(filename='logging.log', encoding='utf-8', level=logging.INFO,
+#                    format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+app = Flask(__name__)
 
 
 @app.route('/')
@@ -21,13 +24,17 @@ def list_users():
 @app.route('/users/<int:user_id>')
 def list_users_movies(user_id):
     user_movies = data_manager.get_user_movies(user_id)
-    if not user_movies:
-        return render_template('no_such_user.html')
+    if user_movies is None or len(user_movies) == 0:
+        if not data_manager.user_exists(user_id):
+            return render_template('no_such_user.html')
+   
+    success_message = request.args.get("success_message")
+    if success_message:
+        success_message = unquote(success_message)
 
-    return render_template('user_movies.html', users_movies=user_movies, user_id=user_id)
+    return render_template('user_movies.html', users_movies=user_movies, user_id=user_id, success_message=success_message)
 
 
-@app.route('/add_user', methods=['GET', 'POST'])
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_new_user():
     if request.method == 'POST':
@@ -47,7 +54,6 @@ def add_new_user():
         return redirect('/users')
 
     return render_template('add_user.html')
-
 
 
 @app.route('/users/<int:user_id>/add_movie', methods=["GET", "POST"])
@@ -76,22 +82,6 @@ def add_new_movie(user_id):
         return redirect(f'/users/{user_id}')
 
     return render_template("add_movie.html", user_id=user_id)
-
-
-@app.route('/users/<int:user_id>')
-def show_user_movies(user_id):
-    # Retrieve user movies and other details from the JSON data manager
-    user_movies = data_manager.get_user_movies(user_id)
-    user_name = data_manager.get_user_name(user_id)
-
-    # Retrieve the success message from the URL parameter
-    success_message = request.args.get('success')
-
-    # Unquote the success message to remove URL encoding
-    if success_message:
-        success_message = unquote(success_message)
-
-    return render_template("user_movies.html", movies=user_movies, user_name=user_name, success_message=success_message)
 
 
 @app.route('/users/<int:user_id>/edit_movie/<int:movie_id>', methods=['GET'])
@@ -128,7 +118,3 @@ def delete_movie():
     data_manager.delete_movie(user_id, movie_id)
 
     return redirect(f'/users/{user_id}')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)

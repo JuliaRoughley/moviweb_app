@@ -12,6 +12,15 @@ class JSONDataManager(DataManagerInterface):
             user_data = json.load(file)
         return user_data
 
+    def user_exists(self, user_id):
+        """Loads the JSON data file and returns true if the user_id locates a matching record"""
+        user_data = self.open_movie_JSON_data()
+        for user in user_data:
+            if user["id"] == user_id:
+                return True
+
+        return False
+
     def get_all_users(self):
         """Loads the JSON data file and returns a list of dictionaries containing user IDs and names"""
         user_data = self.open_movie_JSON_data()
@@ -24,13 +33,19 @@ class JSONDataManager(DataManagerInterface):
 
     def get_user_movies(self, user_id):
         users_data = self.open_movie_JSON_data()
+        userid = False
 
         for user in users_data:
             if user["id"] == user_id:
                 return user["movies"]
 
-        return None
-        # Return an empty list if user not found
+        if not userid:
+            return None
+
+
+
+
+
 
     def add_new_user(self, username):
         users_data = self.open_movie_JSON_data()
@@ -131,3 +146,15 @@ class JSONDataManager(DataManagerInterface):
 
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
+
+    def get_list_user_ids(self):
+        user_info = self.open_movie_JSON_data()
+        user_ids = []
+        for user in user_info:
+            user_ids.append(user["id"])
+
+        return user_ids
+
+
+
+

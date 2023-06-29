@@ -1,4 +1,5 @@
 from DataManager.JSON_data_manager import JSONDataManager
+import pytest
 
 
 def test_jsondatamanager_getallusers():
@@ -18,3 +19,12 @@ def test_jsondatamananger_getusermovies():
     movies = test_class.get_user_movies(1)
     print(movies)
 
+
+def test_jsondata_get_ids():
+    test_class = JSONDataManager("test_jsondatamanager.json")
+    test_ids = test_class.get_list_user_ids()
+    print(test_ids)
+    assert test_ids[0] == 1
+    assert test_ids[1] == 2
+
+test_jsondata_get_ids()
