@@ -11,5 +11,8 @@
   <li><a href="/users/{{ user['id'] }}">{{ user['name'] }}</a></li>
 {% endfor %}
     </ul>
+    <form action="/add_user" method="GET" style="display: inline;">
+        <button type="submit">Add User</button>
+    </form>
 </body>
 </html>

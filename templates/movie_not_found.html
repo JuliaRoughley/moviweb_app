@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>No Such Movie</title>
+</head>
+<body>
+    <h1>Oh Dear...</h1>
+        <h2>I'm afraid we couldn't find the movie you're looking for.</h2>
+            <p>Would you like to add a new movie? Click the "Add Movie" button below.</p>
+            <form action="/users/{{ user_id }}/add_movie" method="GET" style="display: inline;">
+                <button type="submit">Add Movie</button>
+            </form>
+</body>
+</html>

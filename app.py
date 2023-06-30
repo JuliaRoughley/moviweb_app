@@ -94,7 +94,7 @@ def edit_movie(user_id, movie_id):
     if movie:
         return render_template('edit_movie.html', user_id=user_id, movie=movie)
     else:
-        return "Movie not found"  # Or redirect to an error page
+        return render_template('movie_not_found.html', user_id=user_id)
 
 
 @app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['POST'])

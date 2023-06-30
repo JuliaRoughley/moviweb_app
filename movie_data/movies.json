@@ -55,6 +55,13 @@
                 "director": "Danny Boyle",
                 "year": "2007",
                 "rating": 7.2
+            },
+            {
+                "id": 3,
+                "name": "Batman Returns",
+                "director": "Tim Burton",
+                "year": "1992",
+                "rating": 7.1
             }
         ]
     },
@@ -120,6 +127,11 @@
     {
         "id": 7,
         "name": "Ta;ia",
+        "movies": []
+    },
+    {
+        "id": 8,
+        "name": "Simon Sinek",
         "movies": []
     }
 ]

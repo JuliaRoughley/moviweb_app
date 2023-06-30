@@ -25,5 +25,8 @@
         </li>
         {% endfor %}
     </ul>
+    <form action="/users/{{ user_id }}/add_movie" method="GET" style="display: inline;">
+        <button type="submit">Add Movie</button>
+    </form>
 </body>
 </html>
