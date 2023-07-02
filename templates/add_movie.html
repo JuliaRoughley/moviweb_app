@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Movie - MovieWeb App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='static/styles.css') }}">
 </head>
 <body>
+    <header>
     <h1>Add Movie</h1>
+</header>
+<div class="container">
+        {% if error_message %}
+            <strong>Error:</strong> {{error_message}}
+        {% endif %}
         <form action="/users/{{ user_id }}/add_movie" method="POST">
           <label for="movie">Movie name:</label>
           <input type="text" id="movie" name="movie" required>
           <br>
           <input type="submit" value="Add Movie">
     </form>
+</div>
+    <footer>
+        <p>&copy; 2023 MovieWeb App. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>

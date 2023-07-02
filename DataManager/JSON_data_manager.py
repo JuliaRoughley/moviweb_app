@@ -43,10 +43,6 @@ class JSONDataManager(DataManagerInterface):
             return None
 
 
-
-
-
-
     def add_new_user(self, username):
         users_data = self.open_movie_JSON_data()
         new_user_id = len(users_data) + 1

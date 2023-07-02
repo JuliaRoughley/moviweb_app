@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Add User - MovieWeb App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    <header>
     <h1>Add User</h1>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+</header>
+<div class="container">
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
@@ -18,5 +24,9 @@
         {% endif %}
         <input type="submit" value="Add User">
     </form>
+</div>
+    <footer>
+        <p>&copy; 2023 MovieWeb App. All rights reserved.</p>
+    </footer>
 </body>
 </html>

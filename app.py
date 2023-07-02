@@ -62,12 +62,11 @@ def add_new_movie(user_id):
         movie = request.form.get('movie')
         if not movie:
             error_message = "Movie name is required."
-            return render_template('add_movie.html', error=error_message)
+            return render_template('add_movie.html', error=error_message, user_id=user_id)
 
         movie_details = get_movie_details_by_name(movie)
         if movie_details is None:
-            error_message = f"I'm sorry, {movie} doesn't exist in the database."
-            return render_template('add_movie.html', error=error_message)
+            return render_template('api_false_return.html', user_id=user_id)
 
         title = movie
         director = movie_details["director"]
@@ -76,7 +75,7 @@ def add_new_movie(user_id):
 
         if data_manager.movie_exists(user_id, title):
             error_message = f"{title} is already in your list of favorite movies."
-            return render_template('add_movie.html', error=error_message)
+            return render_template('add_movie.html', error_message=error_message, user_id=user_id)
 
         data_manager.add_new_movie(user_id, title, director, year, rating)
         return redirect(f'/users/{user_id}')

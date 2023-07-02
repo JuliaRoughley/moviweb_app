@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Users-Movie_Lists</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body>
+    <header>
     <h1>Your Favorite Movies!</h1>
-    <ul>
+</header>
+<div class="container">
+    <ul class="movie-list">
         {% for movie in users_movies %}
-        <li>
+        <li class="movie-item">
             <h2>{{ movie.name }}</h2>
             <p>Director: {{ movie.director }}</p>
             <p>Year: {{ movie.year }}</p>
@@ -25,8 +30,12 @@
         </li>
         {% endfor %}
     </ul>
+</div>
     <form action="/users/{{ user_id }}/add_movie" method="GET" style="display: inline;">
         <button type="submit">Add Movie</button>
     </form>
+    <footer>
+        <p>&copy; 2023 MovieWeb App. All rights reserved.</p>
+    </footer>
 </body>
 </html>

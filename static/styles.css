@@ -1,0 +1,94 @@
+/* styles.css */
+
+/* Body and container styles */
+body {
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.movie-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.movie-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f2f2f2;
+}
+
+.movie-item h2 {
+  margin-top: 0;
+}
+
+.user-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-item {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f2f2f2;
+}
+
+.user-item h2 {
+  margin-top: 0;
+}
+
+/* Header styles */
+header {
+  background-color: #2979FF;
+  padding: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* Form styles */
+form {
+  margin-top: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="submit"] {
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+form input[type="submit"] {
+  background-color: #2979FF;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+
+/* Footer styles */
+footer {
+  background-color: #2979FF;
+  padding: 20px;
+  color: #FFFFFF;
+  text-align: center;
+}

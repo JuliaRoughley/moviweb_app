@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Movie</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body>
+    <header>
     <h1>Edit Movie</h1>
+</header>
+<div class="container">
     <form action="/users/{{ user_id }}/update_movie/{{ movie.id }}" method="POST">
         <label for="name">Title:</label>
         <input type="text" id="name" name="name" value="{{ movie.name }}" required>
@@ -21,5 +26,9 @@
         <br>
         <input type="submit" value="Update">
     </form>
+</div>
+    <footer>
+        <p>&copy; 2023 MovieWeb App. All rights reserved.</p>
+    </footer>
 </body>
 </html>

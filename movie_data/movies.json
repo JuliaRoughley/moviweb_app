@@ -62,6 +62,20 @@
                 "director": "Tim Burton",
                 "year": "1992",
                 "rating": 7.1
+            },
+            {
+                "id": 4,
+                "name": "Daddy's Home",
+                "director": "Sean Anders",
+                "year": "2015",
+                "rating": 6.2
+            },
+            {
+                "id": 5,
+                "name": "Mary Poppins",
+                "director": "Robert Stevenson",
+                "year": "1964",
+                "rating": "7.8/10"
             }
         ]
     },
