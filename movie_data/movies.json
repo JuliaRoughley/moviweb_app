@@ -4,13 +4,6 @@
         "name": "Alice",
         "movies": [
             {
-                "id": 1,
-                "name": "Inception",
-                "director": "Christopher Nolan",
-                "year": "2010",
-                "rating": "5"
-            },
-            {
                 "id": 2,
                 "name": "The Dark Night",
                 "director": "Christopher Nolan",

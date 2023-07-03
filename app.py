@@ -108,7 +108,7 @@ def update_movie(user_id, movie_id):
 
 
 @app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['POST'])
-def delete_movie():
+def delete_movie(user_id, movie_id):
     # Get the user_id and movie_id from the form data
     user_id = int(request.form.get('user_id'))
     movie_id = int(request.form.get('movie_id'))
@@ -117,3 +117,5 @@ def delete_movie():
     data_manager.delete_movie(user_id, movie_id)
 
     return redirect(f'/users/{user_id}')
+
+

@@ -94,6 +94,7 @@ class JSONDataManager(DataManagerInterface):
         # Save the modified JSON data back to the file
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
+            
 
     def update_movie(self, user_id, movie_id, title, director, year, rating):
         with open(self.filename, "r") as file:
@@ -119,6 +120,7 @@ class JSONDataManager(DataManagerInterface):
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
 
+
     def movie_exists(self, user_id, movie_title):
         users_data = self.open_movie_JSON_data()
         user = next((user for user in users_data if user["id"] == user_id), None)
@@ -126,6 +128,7 @@ class JSONDataManager(DataManagerInterface):
             movies = user.get("movies", [])
             return any(movie.get("name") == movie_title for movie in movies)
         return False
+    
 
     def delete_movie(self, user_id, movie_id):
         users_data = self.open_movie_JSON_data()
@@ -142,6 +145,7 @@ class JSONDataManager(DataManagerInterface):
 
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
+
 
     def get_list_user_ids(self):
         user_info = self.open_movie_JSON_data()
