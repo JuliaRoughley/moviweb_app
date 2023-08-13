@@ -5,24 +5,28 @@ from urllib.parse import unquote, quote
 import logging
 
 data_manager = JSONDataManager("movie_data/movies.json")
-#logging.basicConfig(filename='logging.log', encoding='utf-8', level=logging.INFO,
-#                    format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 app = Flask(__name__)
 
 
 @app.route('/')
 def home():
+    """Presents a (simple) welcome page"""
     return "Welcome to MovieWeb App!"
 
 
 @app.route('/users')
 def list_users():
+    """Gets the list of the users of the app and renders the appropriate html template to 
+    display a webpage to the user"""
     users = data_manager.get_all_users()
     return render_template('users.html', users=users)
 
 
 @app.route('/users/<int:user_id>')
 def list_users_movies(user_id):
+    """Takes user_id as an argument and gets the list of movies for that particular user, then returns it and 
+    renders the html template to display the movies to the user. If a user id is entered that doesn't exist, a 
+    separate html template is rendered informing the user of the error."""
     user_movies = data_manager.get_user_movies(user_id)
     if user_movies is None or len(user_movies) == 0:
         if not data_manager.user_exists(user_id):
@@ -37,6 +41,9 @@ def list_users_movies(user_id):
 
 @app.route('/add_user', methods=['GET', 'POST'])
 def add_new_user():
+    """Hanles GET and POST requests. Get renders the form html template to fill out a new user
+    details, and the form once submitted submits the POST request to add the the new user_details
+    to the saved data (in this case a JSON file). Form validation is also used to ensure no blank fields"""
     if request.method == 'POST':
         username = request.form.get('username')
         if not username:
@@ -58,6 +65,10 @@ def add_new_user():
 
 @app.route('/users/<int:user_id>/add_movie', methods=["GET", "POST"])
 def add_new_movie(user_id):
+    """GET request to render the form html for adding a new movie, the form only needs the name of the movie
+    submitting the form creates a POST request - the rest of the movie details are accessed API request, and if
+    present are added to the movie list for the specific user. The movie is also checked for to see if it already 
+    exists in the user's list, if it does, it informs the user without adding a duplicate movie""" 
     if request.method == 'POST':
         movie = request.form.get('movie')
         if not movie:
@@ -85,6 +96,9 @@ def add_new_movie(user_id):
 
 @app.route('/users/<int:user_id>/edit_movie/<int:movie_id>', methods=['GET'])
 def edit_movie(user_id, movie_id):
+    """To update the movie - can allow form fields to be changed or no change. Looks for movie in the users list,
+    but if not found it renders a different html template. The update button next to the movies opens up a prepopulated
+    form."""
     user_movies = data_manager.get_user_movies(user_id)
     movie = next((movie for movie in user_movies if movie["id"] == movie_id), None)
 
@@ -98,6 +112,8 @@ def edit_movie(user_id, movie_id):
 
 @app.route('/users/<int:user_id>/update_movie/<int:movie_id>', methods=['POST'])
 def update_movie(user_id, movie_id):
+    """The edit_movie GET request opens up this form, and this submits a POST request with any updates 
+    the user might have made"""
     title = request.form.get('name')
     director = request.form.get('director')
     year = request.form.get('year')
@@ -109,13 +125,14 @@ def update_movie(user_id, movie_id):
 
 @app.route('/users/<int:user_id>/delete_movie/<int:movie_id>', methods=['POST'])
 def delete_movie(user_id, movie_id):
-    # Get the user_id and movie_id from the form data
+    """Each movie has associated with it in html a delete button, which sends POST request with the user and movie
+    ids, and activates the delete movie function, removing it from the list"""
     user_id = int(request.form.get('user_id'))
     movie_id = int(request.form.get('movie_id'))
-
-    # Call the delete_movie function from the JSON data manager
     data_manager.delete_movie(user_id, movie_id)
 
     return redirect(f'/users/{user_id}')
 
 
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=3000, debug=True)

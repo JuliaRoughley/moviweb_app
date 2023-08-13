@@ -32,6 +32,7 @@ class JSONDataManager(DataManagerInterface):
         return users
 
     def get_user_movies(self, user_id):
+        """Loades the JSON movie data, loops through the data checking the 'id' in the dictionary against the argument 'user_id', if found it returns the list of the users movies, if not it returns nothing"""
         users_data = self.open_movie_JSON_data()
         userid = False
 
@@ -42,8 +43,8 @@ class JSONDataManager(DataManagerInterface):
         if not userid:
             return None
 
-
     def add_new_user(self, username):
+        """Loads the movie data, creates a new user id for the new user to be added, creates new user"""
         users_data = self.open_movie_JSON_data()
         new_user_id = len(users_data) + 1
         new_user = {
@@ -57,29 +58,26 @@ class JSONDataManager(DataManagerInterface):
             json.dump(users_data, file, indent=4)
 
     def add_new_movie(self, user_id, title, director, year, rating):
-        # Load the JSON data from the file
+        """Loads data, finds the user that corresponds with the user_id (ifcan't find user
+        returns None), access the users movie list in the dictionary and check if the movie
+        the user wants to add already exists in the list - if it does it lets the user know, 
+        if not the movie is added with a newly generated movie id"""
         with open(self.filename, "r") as file:
             users_data = json.load(file)
 
-        # Find the user for whom you want to add the movie
-        user = next((user for user in users_data if user["id"] == user_id), None)
+        user = next(
+            (user for user in users_data if user["id"] == user_id), None)
         if user is None:
-            # Handle user not found error
             return
 
-        # Access the "movies" list for that user
         movies = user["movies"]
-
-        # Check if the movie already exists in the user's list of movies
         if any(movie["name"] == title for movie in movies):
-            # Movie already exists, handle the case appropriately
-            print(f"The movie '{title}' already exists in your list of favorite movies.")
+            print(
+                f"The movie '{title}' already exists in your list of favorite movies.")
             return
 
-        # Generate a new movie ID
         new_movie_id = len(movies) + 1
 
-        # Create the new movie dictionary
         new_movie = {
             "id": new_movie_id,
             "name": title,
@@ -87,29 +85,26 @@ class JSONDataManager(DataManagerInterface):
             "year": year,
             "rating": rating
         }
-
-        # Append the new movie dictionary to the "movies" list
         movies.append(new_movie)
 
-        # Save the modified JSON data back to the file
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
-            
 
     def update_movie(self, user_id, movie_id, title, director, year, rating):
+        """loads JSON file data, finds the correct user we wish to update the movie for, then finds
+        the list of movies and searches for the movie_id - if not foundreturns nothing, if found then updates
+        the movie details and saves to the json file."""
         with open(self.filename, "r") as file:
             users_data = json.load(file)
 
-        # Find the user for whom you want to update the movie
-        user = next((user for user in users_data if user["id"] == user_id), None)
+        user = next(
+            (user for user in users_data if user["id"] == user_id), None)
         if user is None:
-            # Handle user not found error
             return
 
-        # Find the movie for which you want to update the details
-        movie = next((movie for movie in user["movies"] if movie["id"] == movie_id), None)
+        movie = next(
+            (movie for movie in user["movies"] if movie["id"] == movie_id), None)
         if movie is None:
-            # Handle movie not found error
             return
 
         movie["name"] = title
@@ -120,21 +115,25 @@ class JSONDataManager(DataManagerInterface):
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
 
-
     def movie_exists(self, user_id, movie_title):
+        """Function to find if movie already exists in the database, to be used alongside other functions like 
+        add, delete and update movie. Loads the json data, finds user, finds movie"""
         users_data = self.open_movie_JSON_data()
-        user = next((user for user in users_data if user["id"] == user_id), None)
+        user = next(
+            (user for user in users_data if user["id"] == user_id), None)
         if user:
             movies = user.get("movies", [])
             return any(movie.get("name") == movie_title for movie in movies)
         return False
-    
 
     def delete_movie(self, user_id, movie_id):
+        """loads json data, finds the right user, if not found returns None. Accesses the users movie list,
+        Loops through the list looking for matching movie_id, and deletes the movie, then updates the json data
+        with new list."""
         users_data = self.open_movie_JSON_data()
-        user = next((user for user in users_data if user["id"] == user_id), None)
+        user = next(
+            (user for user in users_data if user["id"] == user_id), None)
         if user is None:
-            # Handle user not found error
             return
         movies = user["movies"]
         for movie in movies:
@@ -146,15 +145,11 @@ class JSONDataManager(DataManagerInterface):
         with open(self.filename, "w") as file:
             json.dump(users_data, file, indent=4)
 
-
     def get_list_user_ids(self):
+        """Gets list of user ids"""
         user_info = self.open_movie_JSON_data()
         user_ids = []
         for user in user_info:
             user_ids.append(user["id"])
 
         return user_ids
-
-
-
-
